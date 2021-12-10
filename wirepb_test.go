@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func TestScanner(t *testing.T) {
+func TestCanonical(t *testing.T) {
 	// Wire format ffs.file.Node.
 	// https://github.com/creachadair/ffs/blob/default/file/wiretype/wiretype.proto#L24
 
