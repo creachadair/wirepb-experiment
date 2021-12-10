@@ -11,7 +11,7 @@ import (
 
 func TestCanonical(t *testing.T) {
 	// Wire format ffs.file.Node.
-	// https://github.com/creachadair/ffs/blob/default/file/wiretype/wiretype.proto#L24
+	// https://github.com/creachadair/ffs/blob/default/file/wiretype/wiretype.proto#L64
 
 	const input = "\x12\x13\b\xed\x03\x10\x01\x1a\f\b\xe8\xe9Č\x06\x10" +
 		"\xf0\xb3\xfe\x84\x03\")\n\x05audio\x12 \xcb煿<\xae\xe1|\xcd\xdf\bb\xd2" +
