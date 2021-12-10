@@ -53,7 +53,7 @@ func NewScanner(msg []byte) *Scanner { return &Scanner{src: msg} }
 
 // Next advances the scanner to the next field of the input.
 // If no further input is available, Next returns io.EOF.
-// Otherwise, errors have concrete type *WireError.
+// Otherwise, errors have concrete type *ScanError.
 func (s *Scanner) Next() error {
 	s.pos = s.end
 	s.wtype, s.tag, s.err = 0, 0, nil
@@ -129,20 +129,20 @@ func (s *Scanner) Type() uint64 { return s.wtype }
 func (s *Scanner) Tag() uint64 { return s.tag }
 
 func (s *Scanner) fail(offset int, err error) error {
-	s.err = &WireError{Offset: offset, Err: err}
+	s.err = &ScanError{Offset: offset, Err: err}
 	return s.err
 }
 
-// WireError is the concrete type of errors reported by the scanner.
-type WireError struct {
+// ScanError is the concrete type of errors reported by the scanner.
+type ScanError struct {
 	Offset int
 	Err    error
 }
 
 // Error satisfies the error interface.
-func (e *WireError) Error() string {
+func (e *ScanError) Error() string {
 	return fmt.Sprintf("offset %d: %v", e.Offset, e.Err)
 }
 
 // Unwrap implements error unwrapping for use with errors.Is.
-func (e *WireError) Unwrap() error { return e.Err }
+func (e *ScanError) Unwrap() error { return e.Err }
