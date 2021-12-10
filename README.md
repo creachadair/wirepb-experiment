@@ -3,6 +3,9 @@
 This repository implements an experimental wire-format canonical string format
 for protocol buffer messages.
 
+Specifically, the `wirepb.Canonical` function implements
+[Algorithm 2](#algorithm-2) described below.
+
 ## Background
 
 The [Protocol Buffer encoding rules][pbenc] do not guarantee a consistent
@@ -79,7 +82,7 @@ issues remaining:
 
 - The algorithm cannot distinguish between a field of opaque string type that
   contains the wire encoding of a message, and a field of message type. Compare:
-  
+
   ```protobuf
   message M1 {
     bytes content = 1;
@@ -88,7 +91,7 @@ issues remaining:
     Foo content = 1;
   }
   ```
-  
+
   where the `content` field of M1 contains the wire encoding of a `Foo`.
   Algorithm 2 would canonicalize both of these messages identically.
 
@@ -109,7 +112,7 @@ issues remaining:
   Packed repeated fields are encoded as a wire-type string of concatenated
   varint values. The values within the string do not have the structure of a
   message, so the algorithm does not "fix" the order of the packed values.
-  
+
 [pbenc]: https://developers.google.com/protocol-buffers/docs/encoding
 [pbfo]: https://developers.google.com/protocol-buffers/docs/encoding#order
 [pbmap]: https://developers.google.com/protocol-buffers/docs/proto3#maps
