@@ -79,8 +79,8 @@ func traverse(buf, msg []byte) {
 type entry struct {
 	tag   uint64
 	isStr bool
-	data  []byte
-	value []byte
+	data  []byte // complete field content
+	value []byte // field value only
 }
 
 type entries []entry
