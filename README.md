@@ -108,10 +108,16 @@ issues remaining:
   encoder does include default-valued fields in its output, Algorithm 2 will
   generate a different string than if the field was omitted.
 
+  This problem could be worked around by recognizing and filtering out fields
+  that encode the default (zero) value.
+
 - The algorithm does not handle "packed" repeated fields of scalar type.
   Packed repeated fields are encoded as a wire-type string of concatenated
   varint values. The values within the string do not have the structure of a
   message, so the algorithm does not "fix" the order of the packed values.
+
+  This problem is not easy to work around, since many opaque strings are not
+  distinguishable from a concatenation of varint values.
 
 [pbenc]: https://developers.google.com/protocol-buffers/docs/encoding
 [pbfo]: https://developers.google.com/protocol-buffers/docs/encoding#order
