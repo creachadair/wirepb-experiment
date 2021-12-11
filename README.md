@@ -65,17 +65,19 @@ another message encoded as a string. Furthermore, the wire encoding does not
 distinguish between the encoding of a message and the encodings of an arbitrary
 byte string.
 
+### Algorithm 2
+
 The only way to know for sure whether a field contains a message or an opaque
 string is to consult the schema. However, we can work around this by modifying
 the algorithm as follows:
-
-### Algorithm 2
 
 1. Parse the input into a sequence of (type, tag, value) tuples.
    If parsing fails, return the input unmodified. Otherwise:
 2. For each tuple whose wire type is "string", apply Algorithm 2 to its value.
 3. Sort the resulting tuples by tag (numerically), then value (lexicographically).
 4. Rearrange the fields into the resulting order.
+
+### Limitations
 
 Algorithm 2 fixes most of the problems with Algorithm 1. There are three main
 issues remaining:
@@ -109,7 +111,8 @@ issues remaining:
   generate a different string than if the field was omitted.
 
   This problem could be worked around by recognizing and filtering out fields
-  that encode the default (zero) value.
+  that encode the default (zero) value. This is slightly tricky, though, as it
+  changes the length and content of fields rather than only their order.
 
 - The algorithm does not handle "packed" repeated fields of scalar type.
   Packed repeated fields are encoded as a wire-type string of concatenated
@@ -118,6 +121,19 @@ issues remaining:
 
   This problem is not easy to work around, since many opaque strings are not
   distinguishable from a concatenation of varint values.
+
+## Using Canonical Layout
+
+Algorithm 2 generates a canonical layout of a wire encoding, subject to the
+limitations described above. Because of those limitations, however, the output
+may not itself be an encoding of the original message: In particular, it may
+have permuted opaque string fields that the message expects to be fixed.  The
+permutation is consistent, but the results may not be byte-equal.
+
+🚨 For this reason, **the canonical layout described here should not be stored
+as the encoding of a message**.  It should be used only as the input to a hash,
+checksum, or fingerprint algorithm, and the original encoding should be used to
+store the message.
 
 [pbenc]: https://developers.google.com/protocol-buffers/docs/encoding
 [pbfo]: https://developers.google.com/protocol-buffers/docs/encoding#order
