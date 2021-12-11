@@ -18,9 +18,12 @@ import (
 // for M may not unmarshal to a message equivalent to M, since the order of
 // repeated fields may be changed.
 //
-// Limitations: This implementation requires that the encoding does not contain
-// fields of default values. This is ordinarily true for proto3 messages, but
-// may not be true for proto2.
+// Limitation: The algorithm does not filter out default (zero) valued fields.
+// Such fields are usually omitted by the encoder, but if they are encoded the
+// result will be different.
+//
+// Limitation: Opaque string or bytes fields that contain a valid encoding of a
+// protobuf message will be permuted as if they contained a message.
 func Canonical(msg []byte) []byte {
 	buf := make([]byte, len(msg)) // scratch buffer
 	cp := make([]byte, len(msg))  // copy of input (permuted in-place)
