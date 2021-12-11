@@ -22,8 +22,8 @@ import (
 // fields of default values. This is ordinarily true for proto3 messages, but
 // may not be true for proto2.
 func Canonical(msg []byte) []byte {
-	buf := make([]byte, len(msg))
-	cp := make([]byte, len(msg))
+	buf := make([]byte, len(msg)) // scratch buffer
+	cp := make([]byte, len(msg))  // copy of input (permuted in-place)
 	copy(cp, msg)
 	traverse(buf, cp)
 	return cp
