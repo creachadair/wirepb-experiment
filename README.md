@@ -1,7 +1,7 @@
 # wirepb
 
-This repository implements an experimental wire-format canonical string format
-for protocol buffer messages.
+This repository implements an experimental canonical binary string format for
+protocol buffer messages.
 
 Specifically, the `wirepb.Canonical` function implements
 [Algorithm 2](#algorithm-2) described below.
