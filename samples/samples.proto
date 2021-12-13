@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package wirepb.sample;
+
+option go_package = "github.com/creachadair/wirepb/samples";
+
+message Root {
+  string name = 10;
+  repeated Branch branches = 1;
+  bool is_alive = 4;
+}
+
+message Branch {
+  int64 length = 3;
+  Color leaf_color = 1;
+
+  enum Color {
+    BROWN = 0;
+    YELLOW = 3;
+    ORANGE = 2;
+    RED = 1;
+    GREEN = 4;
+  }
+}
