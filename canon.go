@@ -20,10 +20,12 @@ import (
 //
 // Limitation: The algorithm does not filter out default (zero) valued fields.
 // Such fields are usually omitted by the encoder, but if they are encoded the
-// result will be different.
+// result will be different between encoders that include empty values and
+// encoders that exclude them.
 //
 // Limitation: Opaque string or bytes fields that contain a valid encoding of a
-// protobuf message will be permuted as if they contained a message.
+// protobuf message will be permuted as if they contained a message, even if
+// the structure is coincidental.
 func Canonical(msg []byte) []byte {
 	buf := make([]byte, len(msg)) // scratch buffer
 	cp := make([]byte, len(msg))  // copy of input (permuted in-place)
